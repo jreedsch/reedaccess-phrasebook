@@ -30,9 +30,6 @@ app.configure('development', function(){
 var server = http.createServer(app)
 reload(server, app)
 
-app.get('/', function(req, res) {
-  res.send('Hello from ReedAccess Phrasebook!');
-});
 
 server.listen(app.get('port'), function(){
   console.log("Phrasebook server is listening in %s on port %d", colors.red(process.env.NODE_ENV), app.get('port'));
@@ -41,6 +38,6 @@ server.listen(app.get('port'), function(){
 
 // return the primary html page
 app.get('/', function(req, res) {
-  res.send("Hello Reedaccess Phrasebook");
-  //res.sendfile(path.join(clientDir, 'index.html'))
+  //res.send("Hello Reedaccess Phrasebook");
+  res.sendfile(path.join(clientDir, 'index.html'))
 })

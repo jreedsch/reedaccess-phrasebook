@@ -3,7 +3,7 @@ var express = require('express')
   , http    = require('http')
   , path    = require('path')
   , reload  = require('reload')
-  , phrases = require('./server/api/phrases')
+//-  , phrases = require('./server/api/phrases')
   , colors  = require('colors')
 
 var logfmt = require("logfmt");

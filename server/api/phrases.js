@@ -13,7 +13,7 @@ module.exports.update = update
 module.exports.del    = del
 module.exports.total  = total
 
-var databaseUrl = "test";
+var databaseUrl = "mongodb://reedsch:300453772ce580160c55bd2f2a47ba08@dharma.mongohq.com:10043/app20783754";
 var collections   = ["phrasebook"];
 var db = require("mongojs").connect(databaseUrl, collections);
 

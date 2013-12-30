@@ -3,7 +3,7 @@ var express = require('express')
   , http    = require('http')
   , path    = require('path')
   , reload  = require('reload')
-//-  , phrases = require('./server/api/phrases')
+  , phrases = require('./server/api/phrases')
   , colors  = require('colors')
 
 var logfmt = require("logfmt");
@@ -30,14 +30,29 @@ app.configure('development', function(){
 var server = http.createServer(app)
 reload(server, app)
 
-
 server.listen(app.get('port'), function(){
   console.log("Phrasebook server is listening in %s on port %d", colors.red(process.env.NODE_ENV), app.get('port'));
 });
 
-
 // return the primary html page
 app.get('/', function(req, res) {
-  //res.send("Hello Reedaccess Phrasebook");
   res.sendfile(path.join(clientDir, 'index.html'))
 })
+
+//return total DB rowcount
+app.get('/api/phrases/total', phrases.total); //placement matters
+
+ // hitting this Uri returns the entire phrasebook list
+app.get('/api/phrases', phrases.list); 
+
+ //hitting this Uri writes a new phrase to the DB
+app.post('/api/phrases', phrases.create);
+
+ //hitting this Uri retrives a phrase from the DB
+app.get('/api/phrases/:id', phrases.read);  //sometimes called 'show'
+
+ // hitting this Uri deletes a phrase
+app.delete('/api/phrases/:id', phrases.del);
+
+ // hitting this Uri updates a phrase
+app.put('/api/phrases/:id', phrases.update);

@@ -1,0 +1,58 @@
+.jumbotron {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .bigtitleXX {
+   display: block;
+  }
+  .bigheaderXX {
+   display: block;
+  }
+  .smalltitleXX {
+    display: none;
+  }
+  .smallheaderXX {
+    display: none;
+  }
+}
+
+
+.bigtitle {
+  height: 75px;
+  background-color: #990000;
+  color: #ffff00
+}
+
+.smalltitle {
+  height: 25px;
+  margin: 0px 0px 0px 0px;
+  background-color: #000099;
+  color: #ffffff;
+}
+
+
+.bigheader {
+  height: 100px;
+  background-color: #440000;
+  color: #ffff00
+}
+
+.smallheader {
+  height: 60px;
+  background-color: #000044;
+  color: #ffffff
+}
+
+.vocabwords {
+  padding-left: 5px;
+}
+
+.vocablist {
+  padding-left: 5px;
+}
+
+.vocabrow {
+  padding-left: 5px;
+}
+ 

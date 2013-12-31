@@ -32,7 +32,7 @@ function list (req, res) {
    // Query in MongoDB via Mongo JS Module
   db.phrasebook.find({}).toArray(function(err, phrases)         { 
 
-	if( err || !phrases) console.log("No phrases found");
+	if( err || !phrases) console.log("No phrases found, err: "+objToString(err));
 	  else 
 	{ 
            console.log("FOUND phrases, count: "+phrases.length);

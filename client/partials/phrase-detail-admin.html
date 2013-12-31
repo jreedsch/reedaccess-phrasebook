@@ -1,0 +1,29 @@
+<h2>{{action}} {{displayLanguage}}</h2>
+
+<script type="text/ng-template" id="formfield2.html">
+  <div id="template">
+  <div class="control-group">
+    <label class="control-label" for="{{prop | lowercase}}">{{prop}}</label>
+    <div class="controls" ng-transclude>
+    </div>
+  </div>
+  </div>
+</script>
+
+<form name="phraseform" class="form-horizontal">
+  <formfield prop="English" ng-model="phrase.english"></formfield>
+  <formfield prop="Chinese" ng-model="phrase.chinese"></formfield>
+  <formfield prop="Japanese" ng-model="phrase.japanese"></formfield>
+  <formfield prop="Vietnamese" ng-model="phrase.vietnamese"></formfield>
+  <formfield prop="Russian" ng-model="phrase.russian"></formfield>
+  <formfield prop="Spanish" ng-model="phrase.spanish"></formfield>
+  <formfield prop="German" ng-model="phrase.german"></formfield>
+ 
+
+  <div class="form-actions">
+    <button ng-click="save()" class="btn btn-primary">
+      {{action}}
+    </button>
+    <a href="/" class="btn">Cancel</a>
+  </div>
+</form>

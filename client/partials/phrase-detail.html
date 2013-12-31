@@ -1,0 +1,27 @@
+<h3>{{action}} {{userstate.languages[userstate.user_language_ndx].displayname}}:</h3>
+
+<script type="text/ng-template" id="formfield2.html">
+  <div id="template">
+  <div class="control-group">
+    <label class="control-label" for="{{prop | lowercase}}">{{prop}}</label>
+    <div class="controls" ng-transclude>
+    </div>
+  </div>
+  </div>
+</script>
+ 
+
+<form name="phraseform">
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[0]}} ng-model="phrase.english"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[3]}}  ng-model="phrase.chinese"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[1]}}  ng-model="phrase.japanese"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[2]}}  ng-model="phrase.vietnamese"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[4]}}  ng-model="phrase.russian"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[5]}}  ng-model="phrase.spanish"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[6]}}  ng-model="phrase.german"></formfield>
+ 
+
+  <div class="form-actions">
+    <a href="/" class="btn">Back</a>
+  </div>
+</form>

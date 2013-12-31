@@ -1,0 +1,9 @@
+<h2>Phrasebook Admin </h2>
+today {{today}} <br />
+name {{username}} <br />
+
+<!-- model with an input element, combine it with a filtered binding. -->
+<input ng-model="userNameInput"> Uppercased: {{ userNameInput | uppercase }}
+<a ng-click="setUserName(userNameInput)" class="btn btn-small btn-danger">Set Name</a>
+
+

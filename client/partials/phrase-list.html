@@ -1,0 +1,88 @@
+<div class="row-fluid col-md-12 col-xs-12">
+
+   <div class="col-md-4 col-xs-4">
+      <font size="4">{{userstate.screenvalues[userstate.user_language_ndx].masterlistlabel}}</font>
+   </div>
+
+   <div class="col-md-2 col-xs-2">
+       {{userstate.screenvalues[userstate.user_language_ndx].searchlabel}}:
+   </div>
+
+   <div class="col-md-4 col-xs-4">
+       <input ng-model="query" width="200px">
+   </div>
+ 
+
+   <div class="col-md-1 col-xs-1">
+      <a class="btn btn-small" href="/new" ng-show="adminlogon">New Phrase</a>
+   </div>
+ 
+</div>  <!-- end search bar -->
+
+<!-- http://stackoverflow.com/questions/13216115/filtering-by-multiple-specific-model-properties-in-angularjs -->
+
+<div class="row-fluid vocablist">
+<table class="table table-condensed">
+
+   <!-- tr ng-repeat="phrase in phrases | startFrom:currentPage*pageSize | limitTo:pageSize  | orderBy:orderProp " ng-class="{'info': $index == index}" class="row-fluid" / -->
+
+   <tr ng-repeat="phrase in phrases | filter:query" ng-class="{'info': $index == index}" class="row-fluid" />
+
+      <td  class="vocabrow col-md-2 col-xs-2">
+         <a ng-click="showPhrase(phrase._id)" class="btn btn-small btn-primary">{{userstate.screenvalues[userstate.user_language_ndx].showlabel}}</a>
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords" ng-show="userstate.languages[0].display">
+         {{phrase.english}}
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords" ng-show="userstate.languages[1].display">
+         {{phrase.japanese}}
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords"  ng-show="userstate.languages[2].display">
+         {{phrase.vietnamese}}
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords" ng-show="userstate.languages[3].display">
+         {{phrase.chinese}}
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords" ng-show="userstate.languages[4].display">
+         {{phrase.russian}}
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords" ng-show="userstate.languages[5].display">
+         {{phrase.spanish}}
+      </td>
+
+      <td class="col-md-9 col-xs-9 vocabwords" ng-show="userstate.languages[6].display">
+         {{phrase.german}}
+      </td>
+
+      <td  class="col-md-2 col-xs-2" ng-show="adminlogon">
+         <span >
+            <a ng-click="editPhrase(phrase._id)" class="btn btn-small btn-primary">{{userstate.screenvalues[userstate.user_language_ndx].editlabel}}</a>
+
+            <a ng-click="deletePhrase(phrase._id, $index)" class="btn btn-small btn-danger">{{userstate.screenvalues[userstate.user_language_ndx].dellabel}}</a>
+         </span>
+      </td>
+   </tr>
+</table>
+
+
+
+</div> <!-- end row -->
+
+ 
+<div>  
+    {{currentPage}} {{pageSize}} {{currentPage*pageSize}}
+    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        Previous
+    </button>
+    {{currentPage+1}}/{{numberOfPages()}}
+    <button ng-disabled="currentPage >= phrases.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+</div>
+ 
+
+ 

@@ -1,10 +1,14 @@
-var PhrasebookApp = angular.module('PhrasebookApp', ['ngResource', 'ui.bootstrap', 'phrasebookService']);
-PhrasebookApp.config(function($routeProvider, $locationProvider) {
+var PhrasebookApp = angular.module('PhrasebookApp', ['ngResource', 'ui.bootstrap', 'phrasebookService', ]);
 
+PhrasebookApp.constant('config', { adminRoot: '/admin' }); 
+
+PhrasebookApp.config(['$routeProvider' , '$locationProvider', 'config', function( $routeProvider, $locationProvider, config) {
+
+  console.log("config: "+objToString(config));
   $routeProvider
 
       // show admin logon screen
-     .when('/admin', {controller: PhrasebookAdminCtrl, templateUrl: '/partials/phrasebook-admin.html'})
+     .when( config.adminRoot, {controller: PhrasebookAdminCtrl, templateUrl: '/partials/phrasebook-admin.html'})
 
       // main list controller
      .when('/', {controller: PhraseListCtrl, templateUrl: '/partials/phrase-list.html'})
@@ -19,13 +23,11 @@ PhrasebookApp.config(function($routeProvider, $locationProvider) {
       // edit existing phrase
      .when('/edit/:id', {controller: PhraseEditCtrl, templateUrl: '/partials/phrase-detail-admin.html'})
 
-
-
      .otherwise({redirectTo: '/'});
 
-     $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 
-});
+}]);
 
 // http://www.masnun.com/2013/08/28/rest-access-in-angularjs-using-ngresource.html
 
@@ -33,8 +35,13 @@ PhrasebookApp.config(function($routeProvider, $locationProvider) {
 //  return $resource('/api/phrases/:id', {id: '@id'}, {update: {method: 'PUT'}})
 //})
 
+PhrasebookApp.run( function($rootScope) {
+    console.log("in app.run()");
+          $rootScope.appdata = {savedSearchTerm: "", savedOffset: 0, savedPageNbr: 1}; 
 
+});
 
+//$$$ not used
 //startFrom filter for pagination
 PhrasebookApp.filter('startFrom', function() {
     return function(input, start) {

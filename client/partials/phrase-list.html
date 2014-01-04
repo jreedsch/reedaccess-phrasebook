@@ -1,17 +1,20 @@
+<div >
 <div class="row-fluid col-md-12 col-xs-12">
 
    <div class="col-md-4 col-xs-4">
       <font size="4">{{userstate.screenvalues[userstate.user_language_ndx].masterlistlabel}}</font>
    </div>
 
-   <div class="col-md-2 col-xs-2">
-       {{userstate.screenvalues[userstate.user_language_ndx].searchlabel}}:
+   <!-- have to set model in controller too -->
+   <div class="col-md-4 col-xs-4">
+       <input ng-model="queryval" width="200px">
    </div>
 
-   <div class="col-md-4 col-xs-4">
-       <input ng-model="query" width="200px">
+   <div class="col-md-2 col-xs-2">
+      <button ng-click="searchDB()" class="btn btn-small btn-primary">
+      {{userstate.screenvalues[userstate.user_language_ndx].searchlabel}}
+      </button>
    </div>
- 
 
    <div class="col-md-1 col-xs-1">
       <a class="btn btn-small" href="/new" ng-show="adminlogon">New Phrase</a>
@@ -74,15 +77,23 @@
 
 </div> <!-- end row -->
 
- 
-<div>  
-    {{currentPage}} {{pageSize}} {{currentPage*pageSize}}
-    <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-        Previous
-    </button>
-    {{currentPage+1}}/{{numberOfPages()}}
-    <button ng-disabled="currentPage >= phrases.length/pageSize - 1" ng-click="currentPage=currentPage+1">
-</div>
- 
 
  
+<div>  
+
+    <button ng-disabled="currentPage == 1" ng-click="pageBack()">
+        Previous
+    </button>
+    Page {{currentPage}} of {{numberOfPages}}
+    <button ng-disabled="currentPage >= numberOfPages" ng-click="pageForward()">
+        Next
+    </button>
+<br />  <br />
+    number of entries {{dbrowcount }}<br />
+
+</div>
+ 
+</div>  <!-- end PhraseListCtrl -->
+
+ 
+

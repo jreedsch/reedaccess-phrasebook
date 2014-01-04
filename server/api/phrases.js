@@ -11,9 +11,9 @@ module.exports.read   = read
 module.exports.show   = read
 module.exports.update = update
 module.exports.del    = del
-module.exports.total  = total
+module.exports.dbrowcount  = dbrowcount
 
-var databaseUrl = "mongodb://reedsch:colorado@dharma.mongohq.com:10043/app20783754";
+var databaseUrl = "test";
 var collections   = ["phrasebook"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
@@ -29,13 +29,44 @@ var BSON = mongo.BSONPure;
 //
 function list (req, res) {
 
-   // Query in MongoDB via Mongo JS Module
-  db.phrasebook.find({}).toArray(function(err, phrases)         { 
+  var offsetnum  = ~~req.query.offset || 0,  //~~ for numeric input??
+      limitnum   = ~~req.query.limit || 10;
+  var searchterm = req.query.searchterm, 
+      searchlang = req.query.searchlang;     
 
-	if( err || !phrases) console.log("No phrases found, err: "+objToString(err));
+  // set up search term & sort, both have variable column names
+  var name = searchlang; 
+
+  //var qvalue = "{$gte : \'"+ searchterm +"\'}"; 
+  var qvalue = {};
+  qvalue["$gte"] = searchterm;
+
+  var query = {}; 
+  query[name] = qvalue; 
+
+  var cname = searchlang; 
+  var sortcolname = {};
+  sortcolname[cname] = 1;
+
+
+  console.log("list, offset: "+offsetnum+", limit: "+limitnum+", searchterm: "+searchterm+", lang: "+searchlang);
+console.log("query: "+objToString(query) );
+console.log("query string: "+objToString(qvalue) );
+console.log("sort column: "+objToString(sortcolname) );
+
+   // Query in MongoDB via Mongo JS Module
+   //db.phrasebook.find({}).toArray(function(err, phrases)         { 
+  //db.phrasebook.find( {"english": {$gte: searchterm}}).sort({searchlang: 1}).limit(limitnum).toArray(function(err, phrases)  {  
+  //db.phrasebook.find(query).sort(sortcolname).limit(limitnum).toArray(function(err, phrases)  { 
+  //db.phrasebook.find(query).sort({english: 1}).limit(limitnum).toArray(function(err, phrases)  {    
+
+db.phrasebook.find(query).skip(offsetnum).sort(sortcolname).limit(limitnum).toArray(function(err, phrases)  {  
+
+
+	if( err || !phrases) console.log("No "+searchlang+" phrases found");
 	  else 
 	{ 
-           console.log("FOUND phrases, count: "+phrases.length);
+           console.log("FOUND "+searchlang+" phrases, count: "+phrases.length);
            res.json(phrases);
      }
   });
@@ -157,12 +188,25 @@ function del (req, res) {
 //
 // get count of phrase records
 //
-function total (req, res) {
- db.phrasebook.count(function(err, total) {  
-	if( err || !total) console.log("no phrase count");
+function dbrowcount (req, res) {
+
+  
+  var searchterm = req.query.searchterm, 
+      searchlang = req.query.searchlang;     
+  var name = searchlang; 
+  var qvalue = {};
+  qvalue["$gte"] = searchterm;
+  var query = {}; 
+  query[name] = qvalue; 
+  console.log("phrases.dbrowcount, query: "+objToString(query));
+  console.log("phrases.dbrowcount, search term: "+objToString(qvalue));
+
+  //db.phrasebook.count(function(err, total) {  
+  db.phrasebook.count(query, function(err, total) {  
+	if( err || !total) console.log("dbrowcount, no phrases counted for search term: ");
 	  else 
 	{ 
-           console.log("RECORD COUNT: "+total);
+           console.log("dbrowcount RECORD COUNT for search term  : "+total);
            res.json({total: total});
      }
   });
@@ -195,5 +239,7 @@ function objToString (obj) {
     }
     return str;
 }
+
+
 
 

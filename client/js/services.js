@@ -5,6 +5,7 @@ angular.module('phrasebookService', [])
    service.username = "GUEST"; 
    service.adminlogon = false;
 
+   console.log("in init() of GlobalService" );
    service.setUserName = function(strname) {
      console.log("in service.setUserName() to: "+strname);
      this.username = strname;  
@@ -22,7 +23,13 @@ angular.module('phrasebookService', [])
    return service;
 })
 
-.factory('PhrasebookService', function($resource) {
+
+//http://stackoverflow.com/questions/17160771/angularjs-a-service-that-serves-multiple-resource-urls-data-sources
+
+.factory('PhrasebookDetailService', function($resource) {
+  return $resource('/api/phrases/:id', {id: '@id'}, {update: {method: 'PUT'}});
+})
+.factory('PhrasebookSearchService', function($resource) {
   return $resource('/api/phrases/:id', {id: '@id'}, {update: {method: 'PUT'}});
 });
 

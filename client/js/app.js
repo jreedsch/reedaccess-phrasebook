@@ -4,7 +4,7 @@ PhrasebookApp.constant('config', { adminRoot: '/admin' });
 
 PhrasebookApp.config(['$routeProvider' , '$locationProvider', 'config', function( $routeProvider, $locationProvider, config) {
 
-  console.log("config: "+objToString(config));
+  //console.log("config: "+objToString(config));
   $routeProvider
 
       // show admin logon screen

@@ -39,6 +39,9 @@ app.get('/', function(req, res) {
  // get the DB rowcount, depending on search criteria
 app.get('/api/phrases/dbrowcount', phrases.dbrowcount) //placement matters
 
+// get the login,  
+app.get('/api/phrases/login', phrases.login); //placement matters
+
  // hitting this Uri returns the entire phrasebook list
 app.get('/api/phrases', phrases.list) 
 

@@ -6,10 +6,10 @@ angular.module('phrasebookService', [])
    service.adminlogon = false;
 
    console.log("in init() of GlobalService" );
+
    service.setUserName = function(strname) {
      console.log("in service.setUserName() to: "+strname);
      this.username = strname;  
-     service.adminlogon = true;
      $rootScope.$broadcast("valuesUpdated"); 
    };
    service.getUserName = function() {
@@ -17,8 +17,15 @@ angular.module('phrasebookService', [])
      return this.username;
 	//return { name : 'anonymous' };
    };
+   service.setAdminLogon = function(adminuser) {
+     service.adminlogon = adminuser;
+     $rootScope.$broadcast("valuesUpdated"); 
+     console.log("in service.setAdminLogon() to: "+adminuser);
+   }
    service.getAdminLogon = function() {
-      return this.adminlogon;
+
+      console.log("in service.getAdminLogon(): "+service.adminlogon);
+      return service.adminlogon;
    }
    return service;
 })

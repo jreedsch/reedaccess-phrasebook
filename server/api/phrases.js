@@ -12,9 +12,11 @@ module.exports.show   = read
 module.exports.update = update
 module.exports.del    = del
 module.exports.dbrowcount  = dbrowcount
+module.exports.login  = login
 
 var databaseUrl = "mongodb://reedsch:colorado@dharma.mongohq.com:10043/app20783754";
-var collections   = ["phrasebook"];
+//var databaseUrl = "test";
+var collections   = ["phrasebook", "administrators"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
 var mongo = require('mongodb');
@@ -212,6 +214,38 @@ function dbrowcount (req, res) {
   });
 
 }
+
+//
+// get login
+//
+function login (req, res) {
+
+  var username = req.query.username, 
+      password = req.query.password;     
+  var usernamefield = "name"; 
+  var passwordfield = "password"; 
+  var query = {}; 
+  query[usernamefield] = username; 
+  query[passwordfield] = password;
+
+  console.log("phrases.login, query: "+objToString(query));
+  //console.log("phrases.login, search term: "+objToString(qvalue));
+ 
+   db.administrators.findOne(query, function(err, login) {  
+	if( err) {
+        console.log("login, no users for username: "+username);
+	}  else { 
+        if (login) {
+           console.log("login record for "+username+": "+objToString(login));
+           res.json({login: login});
+        } else {
+           console.log("no login record for "+username);
+           res.json({login: login});
+        }
+     }
+  });
+}
+
 
 
 /*******************

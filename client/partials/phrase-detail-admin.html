@@ -10,14 +10,14 @@
   </div>
 </script>
 
-<form name="phraseform" class="form-horizontal">
-  <formfield prop="English" ng-model="phrase.english"></formfield>
-  <formfield prop="Chinese" ng-model="phrase.chinese"></formfield>
-  <formfield prop="Japanese" ng-model="phrase.japanese"></formfield>
-  <formfield prop="Vietnamese" ng-model="phrase.vietnamese"></formfield>
-  <formfield prop="Russian" ng-model="phrase.russian"></formfield>
-  <formfield prop="Spanish" ng-model="phrase.spanish"></formfield>
-  <formfield prop="German" ng-model="phrase.german"></formfield>
+<form name="phraseform">
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[0]}} ng-model="phrase.english"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[3]}}  ng-model="phrase.chinese"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[1]}}  ng-model="phrase.japanese"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[2]}}  ng-model="phrase.vietnamese"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[4]}}  ng-model="phrase.russian"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[5]}}  ng-model="phrase.spanish"></formfield>
+  <formfield prop={{userstate.languages[userstate.user_language_ndx].languagelist[6]}}  ng-model="phrase.german"></formfield>
  
 
   <div class="form-actions">

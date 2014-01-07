@@ -16,7 +16,7 @@ module.exports.login  = login
 
 var databaseUrl = "mongodb://reedsch:colorado@dharma.mongohq.com:10043/app20783754";
 //var databaseUrl = "test";
-var collections   = ["phrasebook", "administrators"];
+var collections   = ["phrasebook", "administrators", "phrasebookedit"];
 var db = require("mongojs").connect(databaseUrl, collections);
 
 var mongo = require('mongodb');
@@ -103,16 +103,29 @@ function listold (req, res) {
 // save a new phrase
 //
 function create (req, res) {
-  var newPhrase = req.body;
-  console.log("NEW Phrase req body: "+objToString(req.body));
+var adddata = req.body;
+  var phraseData = adddata.phrase;
+  var adminuser  = adddata.adminuser;
 
-  db.phrasebook.save(newPhrase,
+  console.log("NEW Phrase : "+objToString(phraseData)+", admin? :"+adminuser);
+
+  if (adminuser) {
+     db.phrasebook.save(phraseData,
        function(err, saved) { // Query in MongoDB via Mongo JS Module
            if( err || !saved ) 
               res.json(formatRespData(0,"Phrase not saved")); 
            else 
               res.json(formatRespData(1, "Phrase saved"));
-  });
+     });
+  } else {
+     db.phrasebookedit.save(phraseData,
+       function(err, saved) { 
+           if( err || !saved ) 
+              res.json(formatRespData(0,"Phrase not saved")); 
+           else 
+              res.json(formatRespData(1, "Phrase saved"));
+     });
+  }
  
 }
 
@@ -145,23 +158,75 @@ function read (req, res) {
 function update (req, res) {
   var id = req.params.id
 
-  var phraseData = req.body
+  var updatedata = req.body;
+  var phraseData = updatedata.phrase;
+  var adminuser  = updatedata.adminuser;
 
-  console.log("phrases.js function=update, id="+id+", req="+objToString(req.params));
-  console.log("update data:"+objToString(phraseData));
+  //console.log("phrases.js function=update, id="+id+", req="+objToString(req.params));
+  console.log("update data:"+objToString(phraseData)+",  adminuser: "+adminuser);
 
-  var o_id = new BSON.ObjectID(id);
+  //admin users updates get written directly to the DB
+  if (adminuser) {
+     console.log("admin users updates are written directly to the DB")
+     var o_id = new BSON.ObjectID(id);
 
-  db.phrasebook.update({'_id': o_id}, {'english': phraseData.english, 'chinese': phraseData.chinese, 'russian': phraseData.russian, 'japanese': phraseData.japanese, 'vietnamese': phraseData.vietnamese, 'spanish': phraseData.spanish, 'german': phraseData.german }, function(err, photo) {  
-      if( err ) {
+     db.phrasebook.update({'_id': o_id}, {'english': phraseData.english, 'chinese': phraseData.chinese, 'russian': phraseData.russian, 'japanese': phraseData.japanese, 'vietnamese': phraseData.vietnamese, 'spanish': phraseData.spanish, 'german': phraseData.german }, function(err, phrase) {  
+       if( err ) {
            console.log("phrase id "+id+" not updated");
 		res.json(formatRespData(0, err))
-	}  else { 
+	  }  else { 
            console.log("UPDATE Phrase: "+objToString(phraseData));
            res.json(formatRespData({}));
-     }
-  });
+       }
+     });
 
+  //non-admin users updates get emailed to an admin
+
+  } else {
+
+    console.log("non-admin users updates are written to a separate collection")
+    db.phrasebookedit.save(phraseData,
+       function(err, saved) { // Query in MongoDB via Mongo JS Module
+           if( err || !saved ) 
+              res.json(formatRespData(0,"Phrase not saved")); 
+           else 
+              res.json(formatRespData(1, "Phrase saved"));
+    });
+
+
+
+  /* no emails right now, until we figure out how to keep the passwrod safe!
+     console.log("non-admin users updates are sent by email to an admin");
+     var server 	= email.server.connect({
+        user:    "reedsch", 
+        password:"", 
+        host:    "smtp.gmail.com", 
+        ssl:     true
+     });
+    
+     var phrasecontent = objToString(phraseData);
+
+     var message	= {
+        text:	phrasecontent,  //"i hope this works", 
+        from:	"you <reedsch@gmail.com>", 
+        to:	"me <reedsch@gmail.com>, another <another@gmail.com>",
+        //cc:	"else <else@gmail.com>",
+        subject:	"addition to PhraseBook"
+        //, attachment: 
+        //[
+        //   {data:"<html>i <i>hope</i> this works!</html>", alternative:true},
+        //   {path:"path/to/file.zip", type:"application/zip", name:"renamed.zip"}
+        //]
+      };
+
+      server.send(message, function(err, message) { 
+	    console.log(err || message); 
+      });
+
+      res.json(formatRespData({}));
+ */
+
+   }
 }
 
 //
